@@ -30,8 +30,7 @@ a. Are there any specific visualization preferences or features that you would l
 The essential KPIs for monitoring the portfolio include:
 
 Investment distribution:
-- Amount invested distribution categorized by Sector
-- Amount invested distribution categorized by Market
+- Amount invested distribution categorized by Sector by Industry
 
 Individual stock performance:
 - Trailing P/E
@@ -112,9 +111,9 @@ data_port1.rename(columns={'Emisora/Fondo': 'Ticker'}, inplace=True)
 ```
 </details>
 
-#### 3.2 Enriching the Dataset
+### 3.2 Enriching the Dataset
 
-This process is one of the most extensive within Data preparation process due to the project is based on add more data from other source, which in this case is Yahoo Finance, to the original data. In this library we will retrieve fundamental information about each stock in one table and also extract historical data from each stock. Therefore, there will be two tables _final_data_ which stores the fundamental information and _final_daily_data_ which stores the last twelve months of each stock. 
+This process is one of the most extensive within Data preparation process due to the project is based on add more data from other source, which in this case is Yahoo Finance, to the original data. In this library we will retrieve fundamental information about each stock in one table and also extract historical data from each stock.  
 
 <details>
 <Summary> Code </Summary>
@@ -222,9 +221,34 @@ The data preparation process will be facilitated using the Python script feature
 
 </details>
 
+
 <details>
 <Summary> <h2> IV. Data modeling </h2> </Summary>
 
+### 4.1 Data connection
 
+In the previous section, the Python script will be executed through Power BI. This feature will help automate the transformation process, combining and enriching tables before data deployment. After this process, two tables will be created: final_data, storing fundamental information, and final_daily_data, storing the last twelve months of each stock. These tables will be the main sources for the dashboard.  
+
+### 4.2 Dashboard Design
+
+Due to the client's specific needs, the visualizations are divided into two sections. The first section displays general portfolio distribution, presenting Amount Money distribution by Sector in a treemap. This visualization effectively represents distribution considering subgroups. I took the initiative and decided to add a pie graph to show the portfolio distribution by Market, this visualization will show how much money are in cash, national investments (Mexico) and SIC. The second section focuses on individual stock monitoring, showcasing performance metrics such as Trailing PE, Forward PE, Book Value, Book-to-Price, Buy/Sell recommendations by Yahoo Finance, and the Min/Mean/Max target value and I also took the initiative to show the Last twelve months of the market value stock with its volume by day.
+
+SECTION 1 TABLE HERE / SECTION 2 TABLE HERE
+
+### 4.3 Dashboard Creation
+
+Now, the exciting part, the dashboard creation. Considering the previous information, the structure takes into account both general portfolio distribution and individual stock monitoring.
+
+
+Section 1 Explanation here
+
+
+Section 2 Explanation here
+
+
+### 4.4 Iterative development
+
+There was recurrent interaction with the client to identify any areas for improvement or additional information. The only changes applied to the visualization were to the background design, as the client preferred a minimalist design over a striking one. Based on Scrum, this section is crucial for understanding the client's needs quickly and making changes based on what is built as soon as possible to identify opportunities for improvement.    
 
 </details>
+
