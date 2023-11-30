@@ -3,6 +3,10 @@
 ## Context
 I have a financial friend who approached me with a specific inquiry: the feasibility of monitoring his investment portfolio in a centralized dashboard. Recognizing the potential value in such a solution, I embarked on a project to create a tailored dashboard for him. The objective is to empower him with a data-driven tool that facilitates a comprehensive view of his portfolio distribution, enabling informed decision-making in managing his investments.
 
+Built with:
+- Data wrangling: Python (Python scrypt feature)
+- Data visualization: Power BI
+
 <details>
 <Summary> <h2> I. Business Understanding </h2> </Summary>
 
@@ -14,7 +18,7 @@ The primary objective of the portfolio investments monitoring project is to prov
 In order to define and refine the project objectives, several crucial questions were addressed:
 
 - Metrics for Monitoring: <br>
-a. What specific metrics would you like monitor within your investment portfolio?
+a. What specific metrics would you like monitor within your investment portfolio? <br>
 b. Do the metrics require a complex calculation beyond Yahoo Finance metrics?  
 
 - Data collection:<br>
@@ -61,17 +65,35 @@ The data exported from the broker shows the stock symbols, market value (current
 
 The dataset is composed of multiple columns, each representing different aspects of the investment portfolio. However, not all columns are equally relevant for the project. The following table shows the multiple columns that can be found in the table:
 
-***TABLE HERE
+| Column               | Data type | Description                          |
+| :---                 | :---      | :---                                 |
+| Mercardos / Symbols  | String    | Sections by market and Ticker symbol |
+| Titulos              | Integer   | Number of shares                     |
+| Costo promedio       | Float     | Average cost   	                    |
+| Precio mercado       | Float     | Market price                         |
+| PPP                  | Float     | Weighted average price               |
+| Valor Mercado        | Float     | Market value                         |
+| P / M                | Float     | Profit / Loss                        |
+| % Var. Hist.         | Float     | % Historical variation               |
+| % Var. Dia           | Float     | % Daily variation                    |
+| Imp. X Cto.          | Float     | Number of shares * Average cost      |
+| % Cartera            | Float     | % Portfolio distribution             |
 
 #### 2.2.2 Relevant Attributes
 
 Taking into account the previous columns, there are just few attributes that are relevant for the project. The next list breaks down each of these attributes and explains why they could be helpful for the project.
 
-***TABLE 2 HERE
+| Column               | Data type | Description                          |
+| :---                 | :---      | :---                                 |
+| Mercardos / Symbols  | String    | Sections by market and Ticker symbol |
+| Valor Mercado        | Float     | Market value                         |
+| P / M                | Float     | Profit / Loss                        |
+| Imp. X Cto.          | Float     | Number of shares * Average cost      |
+
 
 It is important to note that the data does not require a cleaning process; however, a transformation process is necessary to extract the pertinent metrics. Additionally, there is potential for enriching the dataset by incorporating information such as 'Market,' indicating the origin of the stock (Nacional, SIC, or Efectivo).
 
-***TABLE 3 HERE
+<img src="https://github.com/ServandoBa/InvestmentsDashboard/assets/131488634/93b3b2c8-2ff8-41f0-acc6-46401b379fac.png" width="750" height="350">
 
 </details>
 
@@ -228,6 +250,43 @@ The data preparation process will be facilitated using the Python script feature
 ### 4.1 Data connection
 
 In the previous section, the Python script will be executed through Power BI. This feature will help automate the transformation process, combining and enriching tables before data deployment. After this process, two tables will be created: final_data, storing fundamental information, and final_daily_data, storing the last twelve months of each stock. These tables will be the main sources for the dashboard.  
+
+#### 4.1.1 DAX calculations
+
+In order to add value to the deliverable, there are some DAX calculations considered after data source loading. There are some DAX calculations that can show a better understanding of portfolio's performance.
+
+- % Margin: This is an aggregate metric to show the portfolio's margin, and also can be visualized in other categories such as Market, Sector, and Stock.
+
+Formula: (Market value - Market Price) / Market Price --- Cash won't be considered for the calculation    
+
+```
+% Margin = 
+VAR mkvalue = CALCULATE(SUM(final_df[Valor mercado]),
+                        FILTER(final_df, final_df[Market]<>"Efectivo"))
+VAR avgcost = CALCULATE(SUM(final_df[Imp X Cto.]),
+                        FILTER(final_df, final_df[Market]<>"Efectivo"))
+RETURN DIVIDE(mkvalue-avgcost, avgcost, 0)
+```
+<br>
+
+- prcnt_by_cat: This measure will show the market value distribution by Sector.
+
+Formula: Market value / SUM(Market Price) --- Denominator will consider Sector market price only     
+
+```
+prcnt_by_cat = DIVIDE(final_df[Valor mercado], 
+                      CALCULATE(SUM(final_df[Valor mercado]), ALLEXCEPT(final_df, final_df[sector])))
+```
+<br>
+
+- Last Market Value: Bring the most recent stock market value.    
+
+```
+Last Market Value = CALCULATE(
+            SUM(historical_data[Mean]),
+            FILTER(historical_data, historical_data[Date] = MAX(historical_data[Date])))
+```
+<br>
 
 ### 4.2 Dashboard Design
 
