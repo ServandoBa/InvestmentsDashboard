@@ -13,7 +13,7 @@ Built with:
 ### 1.1 Project Objectives
 The primary objective of the portfolio investments monitoring project is to provide a comprehensive and interactive dashboard that enables the user to monitor the distribution of their investment portfolio. This involves categorizing investments by multiple variables such as sector, industry, and market. Additionally, the project aims to facilitate the monitoring of individual stock performance based on various key metrics.
 
-### 1.2 Addressed questions and porblems
+### 1.2 Addressed questions and problems
 
 In order to define and refine the project objectives, several crucial questions were addressed:
 
