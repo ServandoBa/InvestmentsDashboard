@@ -45,7 +45,7 @@ Individual stock performance:
 
 ### 1.4 Stakeholder Identification
 
-The primary stakeholder for this project is a financial analyst specializing in investments. He focuses on managing investments across various markets with the goal of optimizing portfolio profits.
+The primary stakeholder for this project is a financial analyst specializing in investments. He focuses on managing investments across various markets with the goal of optimizing portfolio profits. For practical purposes, I will refer to my friend as "client".
 
 ### 1.5 Business Risks or Limitations
 
@@ -57,7 +57,7 @@ The primary identified risk is the project's reliance on the Yahoo Finance libra
 
 ### 2.1 Data Collection
 
-The data exported from the broker shows the stock symbols, market value (current price), profit or loss, among others. The format of the file is completely unfavored for data analysis due to the table is offset from the (0,0) and the table structure in unconventional, so the file needs to be manipulated to just retrieve the relevant values from the table.
+The data exported from the broker shows the stock symbols, market value (current price), profit or loss, among others. The format of the file is completely unfavored for data analysis due to the table is offset from the (0,0) and the table structure is unconventional, so the file needs to be manipulated to just retrieve the relevant values from the table.
 
 ### 2.2 Data Exploration
 
@@ -91,7 +91,7 @@ Taking into account the previous columns, there are just few attributes that are
 | Imp. X Cto.          | Float     | Number of shares * Average cost      |
 
 
-It is important to note that the data does not require a cleaning process; however, a transformation process is necessary to extract the pertinent metrics. Additionally, there is potential for enriching the dataset by incorporating information such as 'Market,' indicating the origin of the stock (Nacional, SIC, or Efectivo).
+It is important to note that the data does not require a cleaning process; however, a transformation process is necessary to extract the pertinent metrics. Additionally, there is potential for enriching the dataset by incorporating information such as 'SIC,' indicating the origin of the stock (Nacional, SIC, or Efectivo).
 
 <img src="https://github.com/ServandoBa/InvestmentsDashboard/assets/131488634/93b3b2c8-2ff8-41f0-acc6-46401b379fac.png" width="750" height="350">
 
@@ -117,16 +117,16 @@ sections = df_section[df_section.iloc[:, 0] == 'Emisora/Fondo'].index
 headers = dict(df_section.iloc[sections[0],:])
 
 data_nacional1 = df_section.iloc[sections[0]:sections[1]-1,:].rename(columns=headers).drop(0)
-data_nacional1['Market'] = 'Nacional'
+data_nacional1['SIC'] = 'Nacional'
 
 data_SIC1 = df_section.iloc[sections[1]:sections[2]-1,:].rename(columns=headers).drop(len(data_nacional1)+2)
-data_SIC1['Market'] = 'SIC'
+data_SIC1['SIC'] = 'SIC'
 
 data_cash1 = pd.DataFrame(df_section.iloc[sections[2]:,:].rename(columns=headers).drop(len(data_nacional1)+len(data_SIC1)+4).sum()).transpose()
 data_cash1.at[0, 'Emisora/Fondo'] = 'Efectivo'
-data_cash1['Market'] = 'Efectivo'
+data_cash1['SIC'] = 'Efectivo'
 
-data_port1 = pd.concat([data_nacional1, data_SIC1, data_cash1], ignore_index=True)[['Emisora/Fondo', 'Valor mercado', 'Market', 'P / M']]
+data_port1 = pd.concat([data_nacional1, data_SIC1, data_cash1], ignore_index=True)[['Emisora/Fondo', 'Valor mercado', 'SIC', 'P / M']]
 data_port1['Emisora/Fondo'] = data_port1['Emisora/Fondo'].apply(lambda x: x.replace(' *', '').strip() if isinstance(x, str) else x)
 data_port1.rename(columns={'Emisora/Fondo': 'Ticker'}, inplace=True)
 
@@ -141,9 +141,6 @@ This process is one of the most extensive within Data preparation process due to
 <Summary> Code </Summary>
 
 ```
-# Get stock data
-tickers = [ticker for ticker in data_port1['Ticker']]
-
 # Create function to retrieve information from Yahoo Finance and store it into a dictionary as output
 def GetData(symbol):
     stock = yf.Ticker(symbol)
@@ -257,14 +254,14 @@ In order to add value to the deliverable, there are some DAX calculations consid
 
 - % Margin: This is an aggregate metric to show the portfolio's margin, and also can be visualized in other categories such as Market, Sector, and Stock.
 
-Formula: (Market value - Market Price) / Market Price --- Cash won't be considered for the calculation    
+Formula: (Market value - Market Price) / Market Price --- "Efectivo" from SIC attribute won't be considered for the calculation    
 
 ```
 % Margin = 
 VAR mkvalue = CALCULATE(SUM(final_df[Valor mercado]),
-                        FILTER(final_df, final_df[Market]<>"Efectivo"))
+                        FILTER(final_df, final_df[SIC]<>"Efectivo"))
 VAR avgcost = CALCULATE(SUM(final_df[Imp X Cto.]),
-                        FILTER(final_df, final_df[Market]<>"Efectivo"))
+                        FILTER(final_df, final_df[SIC]<>"Efectivo"))
 RETURN DIVIDE(mkvalue-avgcost, avgcost, 0)
 ```
 <br>
@@ -290,19 +287,21 @@ Last Market Value = CALCULATE(
 
 ### 4.2 Dashboard Design
 
-Due to the client's specific needs, the visualizations are divided into two sections. The first section displays general portfolio distribution, presenting Amount Money distribution by Sector in a treemap. This visualization effectively represents distribution considering subgroups. I took the initiative and decided to add a pie graph to show the portfolio distribution by Market, this visualization will show how much money are in cash, national investments (Mexico) and SIC. The second section focuses on individual stock monitoring, showcasing performance metrics such as Trailing PE, Forward PE, Book Value, Book-to-Price, Buy/Sell recommendations by Yahoo Finance, and the Min/Mean/Max target value and I also took the initiative to show the Last twelve months of the market value stock with its volume by day.
+Taking into account the client's needs, the optimum way to divide the visualizations are dividing into two sections. 
 
-SECTION 1 TABLE HERE / SECTION 2 TABLE HERE
+- Section 1: The first section displays general portfolio distribution, presenting Amount Money distribution by Sector in a treemap. This visualization effectively represents distribution considering subgroups. I took the initiative and decided to add a pie graph to show the Asset Allocation, this visualization will show how much money are in Efectivo (cash), national (Mexico) and SIC. There will be relationship between the visualizations in this section, getting a dynamic dashboard to monitor by multiple categories.
+
+<img src="https://github.com/ServandoBa/InvestmentsDashboard/assets/131488634/7e6b43a8-4e41-4b15-9283-37d477f1a16b.png" width="650" height="350">
+
+
+- Section 2: The second section focuses on individual stock monitoring, showcasing performance metrics such as Trailing PE, Forward PE, Book Value, Book-to-Price, Buy/Sell recommendations by Yahoo Finance, and the Min/Mean/Max target value and I added a visualization of the Last twelve months of the market value stock with its volume by day. There will be a dropdown list of all symbols in the portfolio to monitor the previous metrics and visualizations.
+
+<img src="https://github.com/ServandoBa/InvestmentsDashboard/assets/131488634/dbe93dc6-0857-46c6-879e-1f33157f9fa8.png" width="650" height="350">
+
 
 ### 4.3 Dashboard Creation
 
 Now, the exciting part, the dashboard creation. Considering the previous information, the structure takes into account both general portfolio distribution and individual stock monitoring.
-
-
-Section 1 Explanation here
-
-
-Section 2 Explanation here
 
 
 ### 4.4 Iterative development
