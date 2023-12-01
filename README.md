@@ -1,7 +1,7 @@
-# InvestmentsDashboard
+# Investment Portfolio Visualization
 
 ## Context
-I have a financial friend who approached me with a specific inquiry: the feasibility of monitoring his investment portfolio in a centralized dashboard. Recognizing the potential value in such a solution, I embarked on a project to create a tailored dashboard for him. The objective is to empower him with a data-driven tool that facilitates a comprehensive view of his portfolio distribution, enabling informed decision-making in managing his investments.
+I have a financial friend who approached me with a specific inquiry: the feasibility of monitoring his investment portfolio in one visualization. Recognizing the potential value in such a solution, I embarked on a project to create a tailored dashboard for him. The objective is to empower him with a data-driven tool that facilitates a comprehensive view of his portfolio distribution, enabling informed decision-making in managing his investments.
 
 Built with:
 - Data wrangling: Python (Python scrypt feature)
@@ -236,7 +236,7 @@ final_daily_data = pd.DataFrame(historical_data)
 ```
 </details>
 
-The data preparation process will be facilitated using the Python script feature in Power BI. This automation streamlines the entire procedure, ensuring the seamless retrieval of the necessary tables for the creation of the dashboard.
+The data preparation process will be facilitated using the Python script feature in Power BI. This automation streamlines the entire procedure, ensuring the seamless retrieval of the necessary tables for the creation of the dashboard. The client will just need to export the same file to the same folder to be identified as the same file mentioned in the file path at the beginning of the script.
 
 </details>
 
@@ -291,22 +291,33 @@ Taking into account the client's needs, the optimum way to divide the visualizat
 
 - Section 1: The first section displays general portfolio distribution, presenting Amount Money distribution by Sector in a treemap. This visualization effectively represents distribution considering subgroups. I took the initiative and decided to add a pie graph to show the Asset Allocation, this visualization will show how much money are in Efectivo (cash), national (Mexico) and SIC. There will be relationship between the visualizations in this section, getting a dynamic dashboard to monitor by multiple categories.
 
-<img src="https://github.com/ServandoBa/InvestmentsDashboard/assets/131488634/7e6b43a8-4e41-4b15-9283-37d477f1a16b.png" width="650" height="350">
-
+<img src="https://github.com/ServandoBa/InvestmentsDashboard/assets/131488634/e5700c92-8236-4c2c-b9dc-da24253dec20.png" width="650" height="350">
+<br>
 
 - Section 2: The second section focuses on individual stock monitoring, showcasing performance metrics such as Trailing PE, Forward PE, Book Value, Book-to-Price, Buy/Sell recommendations by Yahoo Finance, and the Min/Mean/Max target value and I added a visualization of the Last twelve months of the market value stock with its volume by day. There will be a dropdown list of all symbols in the portfolio to monitor the previous metrics and visualizations.
 
-<img src="https://github.com/ServandoBa/InvestmentsDashboard/assets/131488634/dbe93dc6-0857-46c6-879e-1f33157f9fa8.png" width="650" height="350">
-
+<img src="https://github.com/ServandoBa/InvestmentsDashboard/assets/131488634/8dd73c0d-f622-4b5a-81c7-f9b63729cbe3.png" width="650" height="350">
+<br>
 
 ### 4.3 Dashboard Creation
 
 Now, the exciting part, the dashboard creation. Considering the previous information, the structure takes into account both general portfolio distribution and individual stock monitoring.
 
+<img src="https://github.com/ServandoBa/InvestmentsDashboard/assets/131488634/db6334c6-03d9-4c1a-bc21-488df68fd0f4.png" width="650" height="350">
+<br>
 
 ### 4.4 Iterative development
 
 There was recurrent interaction with the client to identify any areas for improvement or additional information. The only changes applied to the visualization were to the background design, as the client preferred a minimalist design over a striking one. Based on Scrum, this section is crucial for understanding the client's needs quickly and making changes based on what is built as soon as possible to identify opportunities for improvement.    
-
 </details>
+
+<br>
+
+### Dashboard
+
+<img src="https://github.com/ServandoBa/InvestmentsDashboard/assets/131488634/951cbbcb-bb8e-4def-8f16-f5a8c55fe984.gif" width="650" height="350">
+
+
+
+
 
