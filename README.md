@@ -315,9 +315,5 @@ There was recurrent interaction with the client to identify any areas for improv
 
 ### Dashboard
 
-<img src="https://github.com/ServandoBa/InvestmentsDashboard/assets/131488634/951cbbcb-bb8e-4def-8f16-f5a8c55fe984.gif" width="650" height="350">
-
-
-
-
+<img src="https://github.com/ServandoBa/InvestmentsDashboard/assets/131488634/64e1eb2d-fdec-41cc-80cb-510ea22172fb.gif" width="650" height="350">
 
